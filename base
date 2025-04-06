@@ -1,0 +1,15 @@
+from pygame import *
+
+window = display.set_mode((1200, 700))
+background = transform.scale(image.load('background.png'),(1200, 700))
+
+clock = time.Clock()
+game = True
+while game:
+    window.blit(background,(0,0))
+    for e in event.get():
+        if e.type == QUIT:
+            game = False
+
+        clock.tick(75)
+        display.update()

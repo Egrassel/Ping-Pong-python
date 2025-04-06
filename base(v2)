@@ -1,0 +1,52 @@
+from pygame import *
+
+window = display.set_mode((1200, 700))
+background = transform.scale(image.load('background.png'),(1200, 700))
+
+class Game_Sprite(sprite.Sprite):
+    # конструктор класса
+    def __init__(self, player_image,player_speed, player_x, player_y, xsize, ysize):
+        super().__init__()
+        # каждый спрайт должен хранить свойство image - изображение
+        self.image = transform.scale(image.load(player_image), (xsize, ysize))
+        self.speed = player_speed
+        # каждый спрайт должен хранить свойство rect - прямоугольник, в который он вписан
+        self.rect = self.image.get_rect()
+        self.rect.x = player_x
+        self.rect.y = player_y
+    def reset(self):
+        window.blit(self.image, (self.rect.x, self.rect.y))
+
+class Player(Game_Sprite):
+
+    def reset_l(self):
+        keys = key.get_pressed()
+        if keys[K_w] and self.rect.y > 5:
+            self.rect.y = self.rect.y - self.speed
+        if keys[K_s] and self.rect.y > 5:
+            self.rect.y = self.rect.y + self.speed
+    def reset_r(self):
+        keys = key.get_pressed()
+        if keys[K_UP] and self.rect.y > 5:
+            self.rect.y = self.rect.y - self.speed
+        if keys[K_DOWN] and self.rect.y > 5:
+            self.rect.y = self.rect.y + self.speed
+
+platform_l = Player('platform_white.png', 10, 100, 200, 20, 200)
+platform_r =Player('platform_white.png', 10, 1100, 200, 20, 200)
+
+
+clock = time.Clock()
+game = True
+while game:
+    window.blit(background,(0,0))
+    for e in event.get():
+        if e.type == QUIT:
+            game = False
+
+        platform_l.reset()
+        platform_l.reset_l()
+        platform_r.reset()
+        platform_r.reset_r()
+        clock.tick(60)
+        display.update()
